@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Real-Time Messaging</title>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <h1>Real-Time Messages</h1>
+  <ul id="messages"></ul>
+  <script>
+    const socket = io();
+    socket.on('new_message', (message) => {
+      const li = document.createElement('li');
+      li.textContent = message;
+      document.getElementById('messages').appendChild(li);
+    });
+  </script>
+</body>
+</html>
