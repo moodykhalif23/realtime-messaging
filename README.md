@@ -1,6 +1,6 @@
 # Real-Time Messaging SaaS
 
-A scalable real-time messaging platform built with Node.js, Express, Socket.IO, and RabbitMQ. This project provides secure real-time message broadcasting using WebSockets, combined with a robust REST API for message publishing and JWT-based authentication. It's designed with modularity and scalability in mind, paving the way for future SaaS enhancements.
+Welcome to Real-Time Messaging SaaS! This project is a scalable real-time messaging platform built with Node.js, Express, Socket.IO, and RabbitMQ. It features a secure REST API for publishing messages, JWT authentication, and interactive API documentation using Swagger.
 
 ## Table of Contents
 
@@ -13,29 +13,29 @@ A scalable real-time messaging platform built with Node.js, Express, Socket.IO, 
   - [Configuration](#configuration)
   - [Running the Application](#running-the-application)
 - [API Documentation](#api-documentation)
-- [Testing](#testing)
-- [Future Enhancements](#future-enhancements)
+- [Testing the API](#testing-the-api)
 - [Contributing](#contributing)
 - [License](#license)
 
 ## Overview
 
-This project integrates RabbitMQ and Socket.IO to create a robust real-time messaging service. It supports both a WebSocket-based client for immediate updates and a secure RESTful API for publishing messages, making it an ideal foundation for SaaS applications.
+This project combines the power of RabbitMQ for message queuing and Socket.IO for real-time client updates. With a secure REST API and interactive Swagger docs, you can easily integrate this service into your applications or use it as a foundation for your SaaS platform.
 
 ## Features
 
-- **Real-Time Messaging:** Uses Socket.IO for efficient bi-directional communication.
-- **Reliable Message Queueing:** RabbitMQ ensures messages are reliably queued and processed.
-- **Secure REST API:** JWT authentication protects the publishing endpoint.
-- **Environment-Based Configuration:** Uses dotenv to manage configuration and secrets.
-- **Modular & Scalable:** Clean project structure for future enhancements, including multi-tenancy and advanced analytics.
+- **Real-Time Messaging:** Immediate message updates to connected clients using Socket.IO.
+- **Reliable Queuing:** RabbitMQ ensures your messages are queued and delivered reliably.
+- **Secure API:** Publish messages securely using JWT-protected endpoints.
+- **Interactive API Docs:** Swagger provides a clear, interactive interface for API documentation.
+- **Modular & Scalable:** Clean code structure designed to grow with your needs.
 
 ## Architecture
 
-- **Server:** Built on Express, handling both API requests and Socket.IO connections.
-- **Message Broker:** RabbitMQ manages message queues to decouple message producers from consumers.
-- **Client:** A simple HTML client connects to Socket.IO to display real-time messages.
-- **Security:** JWT authentication secures REST API endpoints, ensuring only authorized access.
+- **Server:** Built with Express, it handles API requests and WebSocket connections.
+- **Message Broker:** RabbitMQ manages message queuing between services.
+- **Client:** A simple HTML interface displays real-time messages.
+- **Security:** JWT authentication protects sensitive API endpoints.
+- **Documentation:** Swagger UI offers an interactive look at the API.
 
 ## Getting Started
 
@@ -43,12 +43,67 @@ This project integrates RabbitMQ and Socket.IO to create a robust real-time mess
 
 - [Node.js](https://nodejs.org/) (v12+ recommended)
 - [RabbitMQ](https://www.rabbitmq.com/download.html) (running locally or accessible remotely)
-- npm (Node Package Manager)
+
 
 ### Installation
 
-1. **Clone the repository:**
+Install dependencies:
 
-   ```bash
-   git clone https://github.com/moodykhalid23/realtime-messaging.git
-   cd realtime-messaging
+```bash
+npm install
+```
+
+### Configuration
+
+Create a `.env` file in the root directory with the following settings:
+
+```ini
+PORT=3000
+RABBITMQ_URL=amqp://localhost
+QUEUE=messages
+JWT_SECRET=yourSecretKey
+```
+
+Make sure to adjust these values as needed. 
+
+### Running the Application
+
+Start RabbitMQ, then run the application using:
+
+```bash
+npm run dev
+```
+
+Open your browser at [http://localhost:3000](http://localhost:3000) to see the real-time client interface.
+
+## API Documentation
+
+Interactive API documentation is available via Swagger. Once your server is running, open your browser and visit:
+
+```
+http://localhost:3000/api-docs
+```
+
+Here you can explore all the API endpoints, view details about required parameters, and test them directly from the browser.
+
+## Testing the API
+
+To publish a message using the secure REST API, use a tool like Postman or curl. For example, with curl:
+
+```bash
+curl -X POST http://localhost:3000/api/messages \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer <your_jwt_token>" \
+-d '{"message": "Hello from REST API!"}'
+```
+
+Replace `<your_jwt_token>` with a valid JWT token generated using your secret key.
+
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request. For any major changes, open an issue first to discuss your ideas.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
