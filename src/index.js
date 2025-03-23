@@ -7,6 +7,9 @@ const bodyParser = require('body-parser');
 const { port } = require('./config/config');
 const { startRabbitMQConsumer } = require('./services/messageService');
 const messagesRouter = require('./routes/messages');
+const usersRouter = require('./routes/users');
+const historyRouter = require('./routes/history');
+const integrationsRouter = require('./routes/integrations');
 const authenticateToken = require('./middleware/auth');
 const setupSwagger = require('./swagger');
 
@@ -14,17 +17,20 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-// Middleware for parsing JSON bodies
+// Middleware for JSON parsing
 app.use(bodyParser.json());
 
-// Serve static files from the public folder
+// Serve static files for the client
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Swagger documentation endpoint
 setupSwagger(app);
 
-// REST endpoint for publishing messages (protected)
+// REST endpoints
 app.use('/api/messages', authenticateToken, messagesRouter);
+app.use('/api/users', usersRouter); // Registration/login do not require auth, profile does.
+app.use('/api/history', authenticateToken, historyRouter);
+app.use('/api/integrations', integrationsRouter);
 
 // Socket.IO connection handling
 io.on('connection', (socket) => {
@@ -34,7 +40,7 @@ io.on('connection', (socket) => {
   });
 });
 
-// Start the RabbitMQ consumer passing the Socket.IO instance
+// Start RabbitMQ consumer
 startRabbitMQConsumer(io);
 
 server.listen(port, () => {
