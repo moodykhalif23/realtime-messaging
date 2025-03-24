@@ -30,7 +30,7 @@ const options = {
       },
     ],
   },
-  // Point to the API docs in the routes files:
+  
   apis: ["./src/routes/*.js"],
 };
 

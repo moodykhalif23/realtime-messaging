@@ -43,7 +43,9 @@ const { url, queue } = require('../config/rabbitmq');
  */
 router.post('/', async (req, res) => {
   const { message } = req.body;
-  if (!message) return res.status(400).json({ error: 'Message is required' });
+  if (!message) {
+    return res.status(400).json({ error: 'Message is required' });
+  }
 
   try {
     const connection = await amqp.connect(url);

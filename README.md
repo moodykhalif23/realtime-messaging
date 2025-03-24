@@ -1,6 +1,7 @@
-# Real-Time Messaging SaaS
+# Real-Time Messaging Platform
 
-Welcome to Real-Time Messaging SaaS! This project is a scalable real-time messaging platform built with Node.js, Express, Socket.IO, and RabbitMQ. It features a secure REST API for publishing messages, JWT authentication, and interactive API documentation using Swagger.
+ A robust, scalable Real-Time Messaging Platform solution for delivering instant messaging. Built with Node.js, Express, Socket.IO, and RabbitMQ, it offers a secure REST API, JWT-based authentication, and interactive Swagger documentation to streamline your integration process.
+
 
 ## Table of Contents
 
@@ -27,7 +28,7 @@ This project combines the power of RabbitMQ for message queuing and Socket.IO fo
 - **Reliable Queuing:** RabbitMQ ensures your messages are queued and delivered reliably.
 - **Secure API:** Publish messages securely using JWT-protected endpoints.
 - **Interactive API Docs:** Swagger provides a clear, interactive interface for API documentation.
-- **Modular & Scalable:** Clean code structure designed to grow with your needs.
+
 
 ## Architecture
 
@@ -41,7 +42,7 @@ This project combines the power of RabbitMQ for message queuing and Socket.IO fo
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v12+ recommended)
+- [Node.js](https://nodejs.org/) (v18+ recommended)
 - [RabbitMQ](https://www.rabbitmq.com/download.html) (running locally or accessible remotely)
 
 
@@ -68,7 +69,7 @@ Make sure to adjust these values as needed.
 
 ### Running the Application
 
-Start RabbitMQ, then run the application using:
+Start RabbitMQ, run the application using:
 
 ```bash
 npm run dev
@@ -78,17 +79,17 @@ Open your browser at [http://localhost:3000](http://localhost:3000) to see the r
 
 ## API Documentation
 
-Interactive API documentation is available via Swagger. Once your server is running, open your browser and visit:
+Interactive API documentation is available via Swagger. Once the server is running, open your browser and visit:
 
 ```
 http://localhost:3000/api-docs
 ```
 
-Here you can explore all the API endpoints, view details about required parameters, and test them directly from the browser.
+You can explore all the API endpoints, view details about required parameters, and test them directly from the browser.
 
 ## Testing the API
 
-To publish a message using the secure REST API, use a tool like Postman or curl. For example, with curl:
+To publish a message using the secure REST API, use Postman or curl.
 
 ```bash
 curl -X POST http://localhost:3000/api/messages \
@@ -102,7 +103,7 @@ Replace `<your_jwt_token>` with a valid JWT token generated using your secret ke
 
 ## Contributing
 
-Contributions are welcome! Please fork the repository and submit a pull request. For any major changes, open an issue first to discuss your ideas.
+Contributions are welcome! Please fork the repository and submit a pull request. For any major changes, open an issue and lets discuss your ideas.
 
 ## License
 
