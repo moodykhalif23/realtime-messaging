@@ -7,7 +7,7 @@ const options = {
     info: {
       title: "Real-Time Messaging API",
       version: "1.0.0",
-      description: "API documentation for the Real-Time Messaging SaaS platform",
+      description: "API documentation for the Real-Time Messaging platform",
     },
     servers: [
       {

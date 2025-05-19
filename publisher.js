@@ -17,4 +17,4 @@ async function publishMessage(message) {
   }
 }
 
-publishMessage('Hello, this is a test message!');
+publishMessage('Working Test!');
