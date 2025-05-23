@@ -1,26 +1,45 @@
 {
-  "name": "realtime-messaging",
+  "name": "healthcare-telemedicine-system",
   "version": "1.0.0",
-  "description": "",
+  "description": "Healthcare telemedicine system with real-time patient monitoring, video consultations, and emergency response",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "setup": "node scripts/setup-mongodb.js",
+    "setup:db": "node scripts/init-database.js",
+    "health": "node scripts/health-check.js",
+    "backup": "node scripts/backup-database.bat",
+    "test:api": "node test-api.js"
   },
-  "keywords": [],
+  "keywords": [
+    "healthcare",
+    "telemedicine",
+    "patient-monitoring",
+    "video-consultation"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
     "amqplib": "^0.10.5",
+    "axios": "^1.9.0",
+    "bcrypt": "^6.0.0",
     "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.0",
+    "multer": "^1.4.5-lts.1",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.7",
     "socket.io": "^4.8.1",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^9.0.1",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"

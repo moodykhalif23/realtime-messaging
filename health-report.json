@@ -1,0 +1,158 @@
+{
+  "overall": "healthy",
+  "checks": {
+    "Configuration": {
+      "status": "pass",
+      "message": "Configuration is valid",
+      "duration": "2ms",
+      "details": {
+        "envFileExists": true,
+        "packageFileExists": true,
+        "environmentVariables": {
+          "PORT": "set",
+          "RABBITMQ_URL": "set",
+          "QUEUE": "set",
+          "MONGO_URL": "set",
+          "JWT_SECRET": "set",
+          "EMAIL_HOST": "set",
+          "EMAIL_PORT": "set",
+          "EMAIL_USER": "set",
+          "EMAIL_PASSWORD": "set",
+          "MAX_FILE_SIZE": "set",
+          "UPLOAD_PATH": "set",
+          "EMERGENCY_CONTACT_EMAIL": "set",
+          "EMERGENCY_CONTACT_PHONE": "set",
+          "HIPAA_COMPLIANCE_MODE": "set",
+          "AUDIT_LOG_RETENTION_DAYS": "set",
+          "SESSION_TIMEOUT_MINUTES": "set"
+        },
+        "packageInfo": {
+          "name": "healthcare-telemedicine-system",
+          "version": "1.0.0",
+          "dependencies": 17,
+          "devDependencies": 1
+        },
+        "requiredVarsSet": 3
+      }
+    },
+    "System Resources": {
+      "status": "pass",
+      "message": "System resources are healthy",
+      "duration": "2ms",
+      "details": {
+        "memory": {
+          "total": "7.91 GB",
+          "used": "6.58 GB",
+          "free": "1.33 GB",
+          "usagePercent": "83.20%"
+        },
+        "cpu": {
+          "cores": 8,
+          "model": "Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz",
+          "loadAverage": [
+            "0.00",
+            "0.00",
+            "0.00"
+          ]
+        },
+        "process": {
+          "heapUsed": "19.76 MB",
+          "heapTotal": "35.46 MB",
+          "external": "20.56 MB",
+          "rss": "73.42 MB"
+        },
+        "uptime": "1.46 hours",
+        "platform": "Windows_NT 10.0.26100",
+        "nodeVersion": "v22.14.0"
+      }
+    },
+    "MongoDB Connection": {
+      "status": "pass",
+      "message": "Connected to MongoDB successfully",
+      "duration": "322ms",
+      "details": {
+        "host": "localhost",
+        "port": 27017,
+        "database": "healthcare_telemedicine",
+        "pingTime": "17ms",
+        "collections": 9,
+        "dataSize": "0.00 MB",
+        "indexSize": "0.63 MB",
+        "version": "8.0.9",
+        "uptime": "0 hours"
+      }
+    },
+    "Database Integrity": {
+      "status": "pass",
+      "message": "Database integrity check passed",
+      "duration": "62ms",
+      "details": {
+        "collections": 9,
+        "documentCounts": {
+          "users": 3,
+          "patients": 1,
+          "providers": 1,
+          "appointments": 0,
+          "medicalrecords": 0,
+          "consultations": 0
+        },
+        "adminUserExists": true,
+        "indexesCreated": 7,
+        "totalDocuments": 5
+      }
+    },
+    "Application Server": {
+      "status": "pass",
+      "message": "Application server is running",
+      "duration": "17ms",
+      "details": {
+        "status": 200,
+        "responseTime": "17ms",
+        "serverData": {
+          "status": "ok",
+          "timestamp": "2025-05-23T13:35:22.273Z",
+          "uptime": 53.8567528,
+          "environment": "development",
+          "version": "1.0.0",
+          "database": {
+            "status": "connected",
+            "name": "healthcare_telemedicine",
+            "host": "localhost",
+            "port": 27017
+          },
+          "memory": {
+            "used": "30 MB",
+            "total": "34 MB"
+          }
+        }
+      }
+    },
+    "API Endpoints": {
+      "status": "pass",
+      "message": "All API endpoints are accessible",
+      "duration": "446ms",
+      "details": {
+        "available": "3/3",
+        "endpoints": {
+          "API Documentation": {
+            "status": 200,
+            "responseTime": "357ms",
+            "available": true
+          },
+          "User Registration": {
+            "status": 400,
+            "responseTime": "79ms",
+            "available": true
+          },
+          "User Login": {
+            "status": 401,
+            "responseTime": "9ms",
+            "available": true
+          }
+        }
+      }
+    }
+  },
+  "timestamp": "2025-05-23T13:35:21.868Z",
+  "duration": 855
+}

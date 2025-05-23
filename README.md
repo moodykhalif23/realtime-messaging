@@ -1,6 +1,6 @@
-# Real-Time Messaging Platform
+# Healthcare Telemedicine System
 
- A robust, scalable Real-Time Messaging Platform solution for delivering instant messaging. Built with Node.js, Express, Socket.IO, and RabbitMQ, it offers a secure REST API, JWT-based authentication, and interactive Swagger documentation to streamline your integration process.
+A comprehensive healthcare telemedicine platform with real-time patient monitoring, video consultations, and emergency response capabilities. Built with Node.js, Express, Socket.IO, MongoDB, and RabbitMQ, it provides secure healthcare communication, HIPAA-compliant data handling, and advanced medical record management.
 
 
 ## Table of Contents
@@ -20,30 +20,74 @@
 
 ## Overview
 
-This project combines the power of RabbitMQ for message queuing and Socket.IO for real-time client updates. With a secure REST API and interactive Swagger docs, you can easily integrate this service into your applications or use it as a foundation for your SaaS platform.
+This healthcare telemedicine system provides a complete solution for remote healthcare delivery, combining real-time communication, patient monitoring, and emergency response capabilities. The platform is designed with healthcare compliance in mind, featuring HIPAA-compliant data handling, secure video consultations, and comprehensive medical record management.
 
 ## Features
 
-- **Real-Time Messaging:** Immediate message updates to connected clients using Socket.IO.
-- **Reliable Queuing:** RabbitMQ ensures your messages are queued and delivered reliably.
-- **Secure API:** Publish messages securely using JWT-protected endpoints.
-- **Interactive API Docs:** Swagger provides a clear, interactive interface for API documentation.
+### 🏥 Core Healthcare Features
+- **Video Consultations:** WebRTC-powered video calls between patients and healthcare providers
+- **Patient Monitoring:** Real-time vital signs monitoring with automated alerts
+- **Medical Records:** Comprehensive electronic health record (EHR) management
+- **Appointment Scheduling:** Smart scheduling system with availability management
+- **Emergency Response:** Instant emergency alerts with location tracking
+- **Prescription Management:** Digital prescription handling and tracking
+
+### 🔒 Security & Compliance
+- **HIPAA Compliance:** Built-in compliance features for healthcare data protection
+- **JWT Authentication:** Secure token-based authentication system
+- **Role-Based Access:** Patient, provider, nurse, admin, and emergency roles
+- **Audit Logging:** Comprehensive access logging for compliance requirements
+- **Data Encryption:** End-to-end encryption for sensitive medical data
+
+### 💬 Communication Features
+- **Real-Time Messaging:** Instant messaging between healthcare team members
+- **Chat During Consultations:** In-session chat with file sharing capabilities
+- **Screen Sharing:** Medical image and document sharing during consultations
+- **Multi-Party Calls:** Support for multiple participants in consultations
+- **Automated Notifications:** Email and SMS reminders for appointments
+
+### 📊 Monitoring & Analytics
+- **Vital Signs Dashboard:** Real-time display of patient vital signs
+- **Critical Alerts:** Automated alerts for abnormal vital sign readings
+- **Patient History:** Comprehensive medical history tracking
+- **Provider Analytics:** Performance metrics and patient outcomes
+- **Emergency Tracking:** Real-time emergency response coordination
 
 
 ## Architecture
 
-- **Server:** Built with Express, it handles API requests and WebSocket connections.
-- **Message Broker:** RabbitMQ manages message queuing between services.
-- **Client:** A simple HTML interface displays real-time messages.
-- **Security:** JWT authentication protects sensitive API endpoints.
-- **Documentation:** Swagger UI offers an interactive look at the API.
+### System Components
+- **Express Server:** RESTful API server handling HTTP requests and WebSocket connections
+- **MongoDB Database:** Document-based storage for patient records, appointments, and medical data
+- **Socket.IO:** Real-time bidirectional communication for consultations and monitoring
+- **RabbitMQ:** Message queuing for reliable communication between services
+- **WebRTC:** Peer-to-peer video/audio communication for consultations
+- **JWT Authentication:** Secure token-based authentication and authorization
+- **File Storage:** Secure file upload and storage for medical documents
+
+### Database Schema
+- **Users:** Patient and provider account information
+- **Patients:** Medical history, allergies, medications, insurance
+- **Providers:** Credentials, specializations, availability schedules
+- **Appointments:** Scheduling, status tracking, consultation details
+- **Medical Records:** Diagnoses, treatments, lab results, prescriptions
+- **Consultations:** Video session data, chat logs, recordings
+
+### Security Architecture
+- **Role-Based Access Control (RBAC):** Different permission levels for each user type
+- **Data Encryption:** AES encryption for sensitive medical data at rest
+- **HTTPS/WSS:** Encrypted communication channels
+- **Audit Trails:** Complete logging of all data access and modifications
+- **Session Management:** Secure session handling with automatic timeouts
 
 ## Getting Started
 
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v18+ recommended)
+- [MongoDB](https://www.mongodb.com/try/download/community) (v5.0+ recommended)
 - [RabbitMQ](https://www.rabbitmq.com/download.html) (running locally or accessible remotely)
+- Modern web browser with WebRTC support
 
 
 ### Installation
@@ -56,26 +100,70 @@ npm install
 
 ### Configuration
 
-Create a `.env` file in the root directory with the following settings:
-
-```ini
-PORT=3000
-RABBITMQ_URL=amqp://localhost
-QUEUE=messages
-JWT_SECRET=yourSecretKey
+1. Copy the example environment file:
+```bash
+cp .env.example .env
 ```
 
-Make sure to adjust these values as needed. 
+2. Edit the `.env` file with your configuration:
+
+```ini
+# Server Configuration
+PORT=3000
+
+# Database Configuration
+MONGO_URL=mongodb://localhost:27017/healthcare_telemedicine
+
+# RabbitMQ Configuration
+RABBITMQ_URL=amqp://localhost
+QUEUE=messages
+
+# JWT Configuration
+JWT_SECRET=your_super_secure_jwt_secret_key_here
+
+# Email Configuration (for notifications)
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASSWORD=your_app_password
+
+# Healthcare Specific Configuration
+EMERGENCY_CONTACT_EMAIL=emergency@hospital.com
+EMERGENCY_CONTACT_PHONE=+1-555-911-0000
+```
 
 ### Running the Application
 
-Start RabbitMQ, run the application using:
+1. **Start MongoDB:**
+```bash
+# On macOS with Homebrew
+brew services start mongodb-community
 
+# On Ubuntu/Debian
+sudo systemctl start mongod
+
+# On Windows, start MongoDB service from Services panel
+```
+
+2. **Start RabbitMQ:**
+```bash
+# On macOS with Homebrew
+brew services start rabbitmq
+
+# On Ubuntu/Debian
+sudo systemctl start rabbitmq-server
+
+# On Windows, start RabbitMQ service from Services panel
+```
+
+3. **Start the application:**
 ```bash
 npm run dev
 ```
 
-Open your browser at [http://localhost:3000](http://localhost:3000) to see the real-time client interface.
+4. **Access the application:**
+- Main interface: [http://localhost:3000](http://localhost:3000)
+- API documentation: [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
 
 ## API Documentation
 

@@ -1,20 +1,1241 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Real-Time Messaging</title>
-  <script src="/socket.io/socket.io.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthCare Pro - Telemedicine Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary-color: #10b981;
+            --accent-color: #f59e0b;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --success-color: #10b981;
+            --info-color: #06b6d4;
+
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+
+            --white: #ffffff;
+            --black: #000000;
+
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+            --border-radius: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0f9ff 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.25rem;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .logo-subtitle {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            font-weight: 500;
+            margin-top: -0.25rem;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: var(--gray-50);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--gray-200);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--secondary-color), #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--gray-900);
+            font-size: 0.875rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            background: var(--white);
+            border-radius: var(--border-radius-xl);
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            flex: 1;
+            min-width: 140px;
+            padding: 0.875rem 1.25rem;
+            text-align: center;
+            background: transparent;
+            border: none;
+            color: var(--gray-600);
+            cursor: pointer;
+            border-radius: var(--border-radius-lg);
+            transition: var(--transition);
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .nav-tab i {
+            font-size: 1rem;
+        }
+
+        .nav-tab.active {
+            background: var(--primary-color);
+            color: var(--white);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: var(--gray-50);
+            color: var(--gray-700);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-title i {
+            color: var(--primary-color);
+        }
+
+        /* Form Elements */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            font-size: 0.875rem;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            transition: var(--transition);
+            background: var(--white);
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: var(--transition);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: var(--white);
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: var(--white);
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-warning {
+            background: var(--warning-color);
+            color: var(--white);
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
+        }
+
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+        }
+
+        .btn-emergency {
+            background: linear-gradient(135deg, var(--danger-color), #dc2626);
+            color: var(--white);
+            font-size: 1.125rem;
+            padding: 1.25rem 2rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            animation: pulse 2s infinite;
+        }
+
+        .btn-emergency:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: var(--shadow-lg); }
+            50% { box-shadow: 0 0 20px rgb(239 68 68 / 0.5); }
+        }
+
+        /* Status Indicators */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-online {
+            background: rgb(16 185 129 / 0.1);
+            color: var(--success-color);
+        }
+
+        .status-offline {
+            background: rgb(239 68 68 / 0.1);
+            color: var(--danger-color);
+        }
+
+        .status-warning {
+            background: rgb(245 158 11 / 0.1);
+            color: var(--warning-color);
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 1rem 1.25rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .alert i {
+            margin-top: 0.125rem;
+        }
+
+        .alert-success {
+            background: rgb(16 185 129 / 0.1);
+            color: #065f46;
+            border: 1px solid rgb(16 185 129 / 0.2);
+        }
+
+        .alert-warning {
+            background: rgb(245 158 11 / 0.1);
+            color: #92400e;
+            border: 1px solid rgb(245 158 11 / 0.2);
+        }
+
+        .alert-danger {
+            background: rgb(239 68 68 / 0.1);
+            color: #991b1b;
+            border: 1px solid rgb(239 68 68 / 0.2);
+        }
+
+        .alert-info {
+            background: rgb(6 182 212 / 0.1);
+            color: #155e75;
+            border: 1px solid rgb(6 182 212 / 0.2);
+        }
+
+        /* Vital Signs Cards */
+        .vital-signs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .vital-card {
+            background: var(--white);
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vital-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .vital-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .vital-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .vital-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-600);
+        }
+
+        .vital-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+
+        .vital-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .vital-unit {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            font-weight: 500;
+        }
+
+        .vital-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .trend-up {
+            color: var(--danger-color);
+        }
+
+        .trend-down {
+            color: var(--success-color);
+        }
+
+        .trend-stable {
+            color: var(--gray-500);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                padding: 1rem;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .nav-tab {
+                min-width: auto;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 1rem;
+            }
+
+            .logo-text {
+                font-size: 1.25rem;
+            }
+
+            .user-info {
+                padding: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+
+            .header-actions {
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Real-Time Messages</h1>
-  <ul id="messages"></ul>
-  <script>
-    const socket = io();
-    socket.on('new_message', (message) => {
-      const li = document.createElement('li');
-      li.textContent = message;
-      document.getElementById('messages').appendChild(li);
-    });
-  </script>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <div>
+                    <div class="logo-text">HealthCare Pro</div>
+                    <div class="logo-subtitle">Telemedicine Platform</div>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <span id="userInitials">GP</span>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Guest User</div>
+                        <div class="user-role" id="userRole">Patient</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('dashboard')">
+                <i class="fas fa-tachometer-alt"></i>
+                Dashboard
+            </button>
+            <button class="nav-tab" onclick="showTab('monitoring')">
+                <i class="fas fa-heartbeat"></i>
+                Patient Monitoring
+            </button>
+            <button class="nav-tab" onclick="showTab('consultation')">
+                <i class="fas fa-video"></i>
+                Video Consultation
+            </button>
+            <button class="nav-tab" onclick="showTab('emergency')">
+                <i class="fas fa-exclamation-triangle"></i>
+                Emergency Response
+            </button>
+            <button class="nav-tab" onclick="showTab('messaging')">
+                <i class="fas fa-comments"></i>
+                Messaging
+            </button>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-chart-line"></i>
+                        Healthcare Dashboard
+                    </h2>
+                    <div class="status-indicator status-online">
+                        <div class="status-dot"></div>
+                        System Online
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Welcome to HealthCare Pro!</strong>
+                        Your comprehensive telemedicine platform for patient monitoring, video consultations, and emergency response.
+                    </div>
+                </div>
+
+                <div class="vital-signs-grid">
+                    <div class="vital-card">
+                        <div class="vital-header">
+                            <div class="vital-title">Heart Rate</div>
+                            <div class="vital-icon" style="background: rgb(239 68 68 / 0.1); color: var(--danger-color);">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                        </div>
+                        <div class="vital-value" id="heartRateValue">--</div>
+                        <div class="vital-unit">bpm</div>
+                        <div class="vital-trend trend-stable">
+                            <i class="fas fa-minus"></i>
+                            Stable
+                        </div>
+                    </div>
+
+                    <div class="vital-card">
+                        <div class="vital-header">
+                            <div class="vital-title">Blood Pressure</div>
+                            <div class="vital-icon" style="background: rgb(37 99 235 / 0.1); color: var(--primary-color);">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                        </div>
+                        <div class="vital-value" id="bloodPressureValue">--/--</div>
+                        <div class="vital-unit">mmHg</div>
+                        <div class="vital-trend trend-stable">
+                            <i class="fas fa-minus"></i>
+                            Normal
+                        </div>
+                    </div>
+
+                    <div class="vital-card">
+                        <div class="vital-header">
+                            <div class="vital-title">Temperature</div>
+                            <div class="vital-icon" style="background: rgb(245 158 11 / 0.1); color: var(--warning-color);">
+                                <i class="fas fa-thermometer-half"></i>
+                            </div>
+                        </div>
+                        <div class="vital-value" id="temperatureValue">--</div>
+                        <div class="vital-unit">°C</div>
+                        <div class="vital-trend trend-stable">
+                            <i class="fas fa-minus"></i>
+                            Normal
+                        </div>
+                    </div>
+
+                    <div class="vital-card">
+                        <div class="vital-header">
+                            <div class="vital-title">Oxygen Saturation</div>
+                            <div class="vital-icon" style="background: rgb(16 185 129 / 0.1); color: var(--secondary-color);">
+                                <i class="fas fa-lungs"></i>
+                            </div>
+                        </div>
+                        <div class="vital-value" id="oxygenValue">--</div>
+                        <div class="vital-unit">%</div>
+                        <div class="vital-trend trend-stable">
+                            <i class="fas fa-minus"></i>
+                            Good
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="card">
+                        <h3 class="card-title">
+                            <i class="fas fa-calendar-check"></i>
+                            Recent Activity
+                        </h3>
+                        <div id="recentActivity">
+                            <p style="color: var(--gray-500); text-align: center; padding: 2rem;">
+                                No recent activity to display
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title">
+                            <i class="fas fa-bell"></i>
+                            Active Alerts
+                        </h3>
+                        <div id="activeAlerts">
+                            <p style="color: var(--gray-500); text-align: center; padding: 2rem;">
+                                No active alerts
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Patient Monitoring Tab -->
+        <div id="monitoring" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-heartbeat"></i>
+                        Patient Monitoring
+                    </h2>
+                    <button class="btn btn-primary" onclick="startMonitoring()">
+                        <i class="fas fa-play"></i>
+                        Start Monitoring
+                    </button>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="patientId">Patient ID</label>
+                        <input type="text" id="patientId" class="form-input" placeholder="Enter patient ID">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="deviceId">Device ID</label>
+                        <input type="text" id="deviceId" class="form-input" placeholder="Enter device ID">
+                    </div>
+                </div>
+
+                <div class="vital-signs-grid">
+                    <div class="vital-card">
+                        <div class="vital-header">
+                            <div class="vital-title">Heart Rate</div>
+                            <button class="btn btn-secondary" onclick="simulateVitalSigns('heartRate')">
+                                <i class="fas fa-play"></i>
+                            </button>
+                        </div>
+                        <div class="vital-value" id="monitorHeartRate">72</div>
+                        <div class="vital-unit">bpm</div>
+                        <div class="vital-trend trend-stable">
+                            <i class="fas fa-minus"></i>
+                            Normal
+                        </div>
+                    </div>
+
+                    <div class="vital-card">
+                        <div class="vital-header">
+                            <div class="vital-title">Blood Pressure</div>
+                            <button class="btn btn-secondary" onclick="simulateVitalSigns('bloodPressure')">
+                                <i class="fas fa-play"></i>
+                            </button>
+                        </div>
+                        <div class="vital-value" id="monitorBloodPressure">120/80</div>
+                        <div class="vital-unit">mmHg</div>
+                        <div class="vital-trend trend-stable">
+                            <i class="fas fa-minus"></i>
+                            Normal
+                        </div>
+                    </div>
+
+                    <div class="vital-card">
+                        <div class="vital-header">
+                            <div class="vital-title">Temperature</div>
+                            <button class="btn btn-secondary" onclick="simulateVitalSigns('temperature')">
+                                <i class="fas fa-play"></i>
+                            </button>
+                        </div>
+                        <div class="vital-value" id="monitorTemperature">36.5</div>
+                        <div class="vital-unit">°C</div>
+                        <div class="vital-trend trend-stable">
+                            <i class="fas fa-minus"></i>
+                            Normal
+                        </div>
+                    </div>
+
+                    <div class="vital-card">
+                        <div class="vital-header">
+                            <div class="vital-title">Oxygen Saturation</div>
+                            <button class="btn btn-secondary" onclick="simulateVitalSigns('oxygenSaturation')">
+                                <i class="fas fa-play"></i>
+                            </button>
+                        </div>
+                        <div class="vital-value" id="monitorOxygen">98</div>
+                        <div class="vital-unit">%</div>
+                        <div class="vital-trend trend-stable">
+                            <i class="fas fa-minus"></i>
+                            Good
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <button class="btn btn-success btn-lg" onclick="simulateNormalVitals()">
+                        <i class="fas fa-check-circle"></i>
+                        Simulate Normal Vitals
+                    </button>
+                    <button class="btn btn-danger btn-lg" onclick="simulateCriticalVitals()">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Simulate Critical Alert
+                    </button>
+                </div>
+
+                <div id="monitoringAlerts"></div>
+            </div>
+        </div>
+
+        <!-- Video Consultation Tab -->
+        <div id="consultation" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-video"></i>
+                        Video Consultation
+                    </h2>
+                    <div class="status-indicator status-offline">
+                        <div class="status-dot"></div>
+                        Not Connected
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="sessionId">Session ID</label>
+                        <input type="text" id="sessionId" class="form-input" placeholder="Enter session ID" value="demo-session-123">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="userType">Join as</label>
+                        <select id="userType" class="form-select">
+                            <option value="patient">Patient</option>
+                            <option value="doctor">Healthcare Provider</option>
+                            <option value="nurse">Nurse</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <div class="card">
+                        <h3 class="card-title">
+                            <i class="fas fa-user"></i>
+                            Your Video
+                        </h3>
+                        <div style="background: #000; border-radius: var(--border-radius); aspect-ratio: 16/9; position: relative; overflow: hidden;">
+                            <video id="localVideo" autoplay muted style="width: 100%; height: 100%; object-fit: cover;"></video>
+                            <div style="position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.875rem;">
+                                You
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title">
+                            <i class="fas fa-user-md"></i>
+                            Remote Video
+                        </h3>
+                        <div style="background: #000; border-radius: var(--border-radius); aspect-ratio: 16/9; position: relative; overflow: hidden;">
+                            <video id="remoteVideo" autoplay style="width: 100%; height: 100%; object-fit: cover;"></video>
+                            <div style="position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.875rem;">
+                                Remote User
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem;">
+                    <button class="btn btn-success btn-lg" onclick="joinConsultation()">
+                        <i class="fas fa-video"></i>
+                        Join Consultation
+                    </button>
+                    <button class="btn btn-danger btn-lg" onclick="leaveConsultation()" style="display: none;">
+                        <i class="fas fa-phone-slash"></i>
+                        Leave Consultation
+                    </button>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">
+                        <i class="fas fa-comments"></i>
+                        Chat
+                    </h3>
+                    <div id="consultationChat" style="height: 200px; overflow-y: auto; border: 1px solid var(--gray-300); border-radius: var(--border-radius); padding: 1rem; margin-bottom: 1rem; background: var(--gray-50);">
+                        <p style="color: var(--gray-500); text-align: center;">Chat messages will appear here</p>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="text" id="chatMessage" class="form-input" placeholder="Type your message..." style="flex: 1;">
+                        <button class="btn btn-primary" onclick="sendChatMessage()">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Emergency Response Tab -->
+        <div id="emergency" class="tab-content">
+            <div class="card" style="background: linear-gradient(135deg, #fee2e2, #fef2f2); border: 2px solid var(--danger-color);">
+                <div class="card-header">
+                    <h2 class="card-title" style="color: var(--danger-color);">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Emergency Response Center
+                    </h2>
+                    <div class="status-indicator status-warning">
+                        <div class="status-dot"></div>
+                        Emergency Ready
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <button class="btn-emergency" onclick="triggerPanicButton()">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        🚨 PANIC BUTTON 🚨
+                    </button>
+                    <p style="margin-top: 1rem; color: var(--gray-600); font-size: 0.875rem;">
+                        Press only in case of immediate emergency
+                    </p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="emergencyPatientId">Patient ID</label>
+                        <input type="text" id="emergencyPatientId" class="form-input" placeholder="Enter patient ID" value="demo-patient-001">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="emergencySeverity">Severity Level</label>
+                        <select id="emergencySeverity" class="form-select">
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high" selected>High</option>
+                            <option value="critical">Critical</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="emergencyDescription">Emergency Description</label>
+                    <textarea id="emergencyDescription" class="form-textarea" placeholder="Describe the emergency situation..." rows="4"></textarea>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                    <button class="btn btn-danger btn-lg" onclick="triggerEmergencyAlert()" style="flex: 1;">
+                        <i class="fas fa-ambulance"></i>
+                        SEND EMERGENCY ALERT
+                    </button>
+                    <button class="btn btn-warning btn-lg" onclick="triggerFallAlert()" style="flex: 1;">
+                        <i class="fas fa-user-injured"></i>
+                        Report Fall Detection
+                    </button>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">
+                        <i class="fas fa-list"></i>
+                        Active Emergency Alerts
+                    </h3>
+                    <div id="emergencyList">
+                        <p style="color: var(--gray-500); text-align: center; padding: 2rem;">
+                            No active emergency alerts
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Messaging Tab -->
+        <div id="messaging" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-comments"></i>
+                        Healthcare Messaging
+                    </h2>
+                    <div class="status-indicator status-online">
+                        <div class="status-dot"></div>
+                        Connected
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem; height: 500px;">
+                    <div class="card">
+                        <h3 class="card-title">
+                            <i class="fas fa-users"></i>
+                            Contacts
+                        </h3>
+                        <div id="contactsList" style="overflow-y: auto;">
+                            <div style="padding: 0.75rem; border-bottom: 1px solid var(--gray-200); cursor: pointer;" onclick="selectContact('Dr. Smith')">
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <div class="user-avatar" style="width: 24px; height: 24px; font-size: 0.75rem;">DS</div>
+                                    <div>
+                                        <div style="font-weight: 500;">Dr. Sarah Smith</div>
+                                        <div style="font-size: 0.75rem; color: var(--gray-500);">Cardiologist</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="padding: 0.75rem; border-bottom: 1px solid var(--gray-200); cursor: pointer;" onclick="selectContact('Nurse Johnson')">
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <div class="user-avatar" style="width: 24px; height: 24px; font-size: 0.75rem; background: var(--info-color);">NJ</div>
+                                    <div>
+                                        <div style="font-weight: 500;">Nurse Johnson</div>
+                                        <div style="font-size: 0.75rem; color: var(--gray-500);">ICU Nurse</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title">
+                            <i class="fas fa-comment"></i>
+                            <span id="currentContact">Select a contact</span>
+                        </h3>
+                        <div id="messagesList" style="flex: 1; overflow-y: auto; padding: 1rem; background: var(--gray-50); border-radius: var(--border-radius); margin-bottom: 1rem; height: 300px;">
+                            <p style="color: var(--gray-500); text-align: center;">Select a contact to start messaging</p>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="text" id="messageInput" class="form-input" placeholder="Type your message..." style="flex: 1;" onkeypress="if(event.key==='Enter') sendMessage()">
+                            <button class="btn btn-primary" onclick="sendMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include JavaScript -->
+    <script src="app.js"></script>
+    <script>
+        // Additional messaging functions
+        let currentContact = null;
+        let messages = {};
+
+        function selectContact(contactName) {
+            currentContact = contactName;
+            document.getElementById('currentContact').textContent = contactName;
+
+            // Initialize messages for contact if not exists
+            if (!messages[contactName]) {
+                messages[contactName] = [];
+            }
+
+            displayMessages();
+        }
+
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+
+            if (!message || !currentContact) return;
+
+            // Add message to local storage
+            if (!messages[currentContact]) {
+                messages[currentContact] = [];
+            }
+
+            messages[currentContact].push({
+                text: message,
+                sender: 'You',
+                timestamp: new Date(),
+                type: 'sent'
+            });
+
+            messageInput.value = '';
+            displayMessages();
+
+            // Simulate response after 2 seconds
+            setTimeout(() => {
+                messages[currentContact].push({
+                    text: getAutoResponse(message),
+                    sender: currentContact,
+                    timestamp: new Date(),
+                    type: 'received'
+                });
+                displayMessages();
+            }, 2000);
+        }
+
+        function displayMessages() {
+            const messagesList = document.getElementById('messagesList');
+            if (!currentContact || !messages[currentContact]) {
+                messagesList.innerHTML = '<p style="color: var(--gray-500); text-align: center;">No messages yet</p>';
+                return;
+            }
+
+            messagesList.innerHTML = messages[currentContact].map(msg => `
+                <div style="margin-bottom: 1rem; display: flex; ${msg.type === 'sent' ? 'justify-content: flex-end' : 'justify-content: flex-start'};">
+                    <div style="max-width: 70%; padding: 0.75rem; border-radius: var(--border-radius); ${msg.type === 'sent' ? 'background: var(--primary-color); color: white;' : 'background: white; border: 1px solid var(--gray-300);'}">
+                        <div style="font-size: 0.875rem;">${msg.text}</div>
+                        <div style="font-size: 0.75rem; opacity: 0.7; margin-top: 0.25rem;">${msg.timestamp.toLocaleTimeString()}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            messagesList.scrollTop = messagesList.scrollHeight;
+        }
+
+        function getAutoResponse(message) {
+            const responses = [
+                "Thank you for your message. I'll review this and get back to you shortly.",
+                "Received. I'll check on this right away.",
+                "Thanks for the update. Please let me know if you need anything else.",
+                "I'll look into this and provide an update soon.",
+                "Understood. I'll coordinate with the team on this."
+            ];
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        function sendChatMessage() {
+            const chatInput = document.getElementById('chatMessage');
+            const message = chatInput.value.trim();
+
+            if (!message) return;
+
+            const chatContainer = document.getElementById('consultationChat');
+            const messageElement = document.createElement('div');
+            messageElement.style.cssText = 'margin-bottom: 0.5rem; padding: 0.5rem; background: var(--primary-color); color: white; border-radius: var(--border-radius); max-width: 70%; margin-left: auto;';
+            messageElement.innerHTML = `
+                <div style="font-size: 0.875rem;">${message}</div>
+                <div style="font-size: 0.75rem; opacity: 0.8;">${new Date().toLocaleTimeString()}</div>
+            `;
+
+            chatContainer.appendChild(messageElement);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            chatInput.value = '';
+
+            // Simulate response
+            setTimeout(() => {
+                const responseElement = document.createElement('div');
+                responseElement.style.cssText = 'margin-bottom: 0.5rem; padding: 0.5rem; background: white; border: 1px solid var(--gray-300); border-radius: var(--border-radius); max-width: 70%;';
+                responseElement.innerHTML = `
+                    <div style="font-size: 0.875rem;">Thank you for your message. How can I assist you further?</div>
+                    <div style="font-size: 0.75rem; color: var(--gray-500);">${new Date().toLocaleTimeString()}</div>
+                `;
+                chatContainer.appendChild(responseElement);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 1500);
+        }
+
+        function triggerFallAlert() {
+            const fallData = {
+                patientId: document.getElementById('emergencyPatientId').value || 'demo-patient-001',
+                deviceId: 'fall-detector-001',
+                confidence: 0.95,
+                impactForce: 2.3,
+                location: {
+                    latitude: 40.7128,
+                    longitude: -74.0060,
+                    address: "Patient Home"
+                }
+            };
+
+            socket.emit('fall-detected', fallData);
+            showAlert('🚨 Fall detection alert sent - High confidence fall detected!', 'danger');
+
+            // Add to emergency list
+            const fallAlert = {
+                alertId: 'FALL-' + Date.now(),
+                description: `Fall detected with ${(fallData.confidence * 100).toFixed(1)}% confidence`,
+                severity: 'critical',
+                createdAt: new Date()
+            };
+            addEmergencyToList(fallAlert);
+        }
+    </script>
 </body>
 </html>
